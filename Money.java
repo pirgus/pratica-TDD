@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 abstract class Money  {
    protected int amount;
+   protected String currency;
    
    public boolean equals(Object object) {
       Money money = (Money) object;
@@ -11,14 +12,24 @@ abstract class Money  {
    }
 
     static Dollar dollar(int amount)  {
-      return new Dollar(amount);
+      return new Dollar(amount, "USD");
    }
 
     static Money franc(int amount) {
-      return new Franc(amount);
+      return new Franc(amount, "CHF");
     }
 
+    String currency(){
+        return currency;
+    }
+
+   Money(int amount, String currency) {
+      this.amount = amount;
+      this.currency = currency;
+   }
+
    abstract Money times(int multiplier);  
+
 }
 
 public void testEquality() {
@@ -39,4 +50,9 @@ public void testFrancMultiplication() {
    Money five = Money.franc(5);
    assertEquals(Money.franc(10), five.times(2));
    assertEquals(Money.franc(15), five.times(3));
+}
+
+public void testCurrency() {
+   assertEquals("USD", Money.dollar(1).currency());
+   assertEquals("CHF", Money.franc(1).currency());
 }
